@@ -1,0 +1,36 @@
+{
+  "name": "design-pattern-generator",
+  "version": "1.0.0",
+  "description": "Code generator for design patterns",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "t",
+    "build:commonjs": "rimraf lib && tsc --target es5 --outDir lib --module commonjs --declaration",
+    "build:es": "rimraf es && tsc --target es6 --outDir es --module es6",
+    "build": "npm run build:commonjs && npm run build:es",
+    "ts": "ts-node src/",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antflaherty/design-pattern-generator.git"
+  },
+  "author": "antflaherty",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/antflaherty/design-pattern-generator/issues"
+  },
+  "homepage": "https://github.com/antflaherty/design-pattern-generator#readme",
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.9.1",
+    "typescript": "^3.8.3"
+  },
+  "files": [
+    "es",
+    "lib"
+  ],
+  "types": "./lib/index.d.ts",
+  "jsnext:main": "./es/index.js",
+  "module": "./es/index.js"
+}
