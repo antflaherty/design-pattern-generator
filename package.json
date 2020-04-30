@@ -2,10 +2,10 @@
   "name": "design-pattern-generator",
   "version": "1.0.0",
   "description": "Code generator for design patterns",
-  "main": "./lib/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "mocha"
+    "test": "mocha -r ts-node/register src/test/**/*.test.ts"
   },
   "repository": {
     "type": "git",
