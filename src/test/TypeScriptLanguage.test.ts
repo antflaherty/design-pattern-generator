@@ -2,49 +2,76 @@ import { expect } from 'chai';
 import 'mocha';
 import TypeScriptLanguage from '../lib/TypeScriptLanguage';
 
-const testMethod1 = `testMethod1(): void {}`;
-const testMethod2 = `testMethod2(): string { return "test"; }`;
-
 describe('TypeScriptLanguage: getClass', () => {
+	const testMethod1 = `testMethod1(): void {}`;
+	const testMethod2 = `testMethod2(): string { return "test"; }`;
+	const code = getCodeBlock(testMethod1, testMethod2);
+
 	it('should return a properly formatted public class', () => {
-		const codeSpec: any = {
-			name: 'TestClass',
-			visibility: 'public',
-		};
+		const codeSpec: any = { name: 'TestClass', visibility: 'public' };
 
-		const codeLines: string[] = [`${testMethod1}`, `${testMethod2}`];
-		const code = codeLines.join('\n');
-
-		const expectedClassLines: string[] = [
+		const expectedClass = getExpectedCodeBlock(
 			`${codeSpec.visibility} class ${codeSpec.name} {`,
-			`\t${testMethod1}`,
-			`\t${testMethod2}`,
-			`}`,
-		];
-		const expectedClass = expectedClassLines.join('\n');
-		console.log(expectedClass);
+			testMethod1,
+			testMethod2
+		);
+
 		const language: TypeScriptLanguage = new TypeScriptLanguage();
 		expect(language.getClass(codeSpec, code)).to.equal(expectedClass);
 	});
 
 	it('should return a properly formatted class if visibility is omitted', () => {
-		const codeSpec: any = {
-			name: 'TestClass',
-			visibility: '',
-		};
+		const codeSpec: any = { name: 'TestClass', visibility: '' };
 
-		const codeLines: string[] = [`${testMethod1}`, `${testMethod2}`];
-		const code = codeLines.join('\n');
-
-		const expectedClassLines = [
+		const expectedClass = getExpectedCodeBlock(
 			`class ${codeSpec.name} {`,
-			`\t${testMethod1}`,
-			`\t${testMethod2}`,
-			`}`,
-		];
-		const expectedClass = expectedClassLines.join('\n');
+			testMethod1,
+			testMethod2
+		);
 
 		const language: TypeScriptLanguage = new TypeScriptLanguage();
 		expect(language.getClass(codeSpec, code)).to.equal(expectedClass);
 	});
 });
+
+describe('TypeScriptLanguage: getMethod', () => {
+	const testVariable1 = `const testVariable1: string = "This is a test";`;
+	const testVariable2 = `let testVariable2: string = "This is also a test";`;
+	const code = getCodeBlock(testVariable1, testVariable2);
+
+	it('should return a properly formatted private method', () => {
+		const codeSpec: any = { name: 'TestMethod', visibility: 'public' };
+
+		const expectedMethod: string = getExpectedCodeBlock(
+			`${codeSpec.visibility} function ${codeSpec.name} {`,
+			testVariable1,
+			testVariable2
+		);
+
+		const language: TypeScriptLanguage = new TypeScriptLanguage();
+		expect(language.getMethod(codeSpec, code)).to.equal(expectedMethod);
+	});
+
+	it('should return a properly formatted method if visibility is omitted', () => {
+		const codeSpec: any = { name: 'TestMethod', visibility: '' };
+
+		const expectedMethod: string = getExpectedCodeBlock(
+			`function ${codeSpec.name} {`,
+			testVariable1,
+			testVariable2
+		);
+
+		const language: TypeScriptLanguage = new TypeScriptLanguage();
+		expect(language.getMethod(codeSpec, code)).to.equal(expectedMethod);
+	});
+});
+
+function getCodeBlock(...lines: string[]) {
+	return lines.join('\n');
+}
+
+function getExpectedCodeBlock(topLine: string, ...lines: string[]): string {
+	const innerLines = lines.map((l) => `\t${l}`);
+	const blockLines = [topLine].concat(innerLines).concat(['}']);
+	return blockLines.join('\n');
+}
