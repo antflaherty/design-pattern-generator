@@ -1,3 +1,3 @@
 export default interface Language {
-	getClass(codeSpec: { name: string }, code: string): string;
+	getClass(codeSpec: { name: string; visibility: string }, code: string): string;
 }

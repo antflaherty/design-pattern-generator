@@ -1,8 +1,12 @@
 import Language from './Language';
 
 export default class TypeScriptLanguage implements Language {
-	getClass(codeSpec: { name: string }, code: string): string {
+	getClass(codeSpec: { name: string; visibility: string }, code: string): string {
+		const classVisibilty = codeSpec.visibility;
 		const className = codeSpec.name;
-		return `class ${className} {\n${code}\n}\n`;
+		return `
+${classVisibilty} class ${className} {
+  ${code}
+}`.trim();
 	}
 }
