@@ -3,7 +3,7 @@ import 'mocha';
 import TypeScriptLanguage from '../lib/TypeScriptLanguage';
 
 const testMethod1 = `testMethod1(): void {}`;
-const testMethod2 = `testMethod2():string { return "test"; }`;
+const testMethod2 = `testMethod2(): string { return "test"; }`;
 
 describe('TypeScriptLanguage: getClass', () => {
 	it('should return a properly formatted public class', () => {
@@ -12,19 +12,17 @@ describe('TypeScriptLanguage: getClass', () => {
 			visibility: 'public',
 		};
 
-		const code: string = `
-		${testMethod1}
-		${testMethod2}
-		`.trim();
+		const codeLines: string[] = [`${testMethod1}`, `${testMethod2}`];
+		const code = codeLines.join('\n');
 
-		const expectedClassLines = [
+		const expectedClassLines: string[] = [
 			`${codeSpec.visibility} class ${codeSpec.name} {`,
-			`	${testMethod1}`,
-			`	${testMethod2}`,
+			`\t${testMethod1}`,
+			`\t${testMethod2}`,
 			`}`,
 		];
 		const expectedClass = expectedClassLines.join('\n');
-
+		console.log(expectedClass);
 		const language: TypeScriptLanguage = new TypeScriptLanguage();
 		expect(language.getClass(codeSpec, code)).to.equal(expectedClass);
 	});
@@ -35,15 +33,13 @@ describe('TypeScriptLanguage: getClass', () => {
 			visibility: '',
 		};
 
-		const code: string = `
-		${testMethod1}
-		${testMethod2}
-		`.trim();
+		const codeLines: string[] = [`${testMethod1}`, `${testMethod2}`];
+		const code = codeLines.join('\n');
 
 		const expectedClassLines = [
 			`class ${codeSpec.name} {`,
-			`	${testMethod1}`,
-			`	${testMethod2}`,
+			`\t${testMethod1}`,
+			`\t${testMethod2}`,
 			`}`,
 		];
 		const expectedClass = expectedClassLines.join('\n');
