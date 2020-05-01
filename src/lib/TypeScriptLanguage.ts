@@ -23,16 +23,19 @@ export default class TypeScriptLanguage implements Language {
 		},
 		code: string
 	): string {
+		const methodVisibilty = codeSpec.visibility;
+		const methodName = codeSpec.name;
+		const params = codeSpec.params;
 		let methodCode = '';
 
-		if (codeSpec.visibility) {
-			methodCode = `${codeSpec.visibility} `;
+		if (methodVisibilty) {
+			methodCode = `${methodVisibilty} `;
 		}
 
-		methodCode += `${codeSpec.name}(`;
+		methodCode += `${methodName}(`;
 
-		if (codeSpec.params) {
-			codeSpec.params.forEach((param) => {
+		if (params) {
+			params.forEach((param) => {
 				methodCode += `${param.name}: ${param.type}, `;
 			});
 			methodCode = methodCode.substr(0, methodCode.length - 2);
