@@ -43,7 +43,7 @@ describe('TypeScriptLanguage: getMethod', () => {
 		const codeSpec: any = { name: 'TestMethod', visibility: 'public' };
 
 		const expectedMethod: string = getExpectedCodeBlock(
-			`${codeSpec.visibility} function ${codeSpec.name} {`,
+			`${codeSpec.visibility} ${codeSpec.name}() {`,
 			testVariable1,
 			testVariable2
 		);
@@ -56,7 +56,7 @@ describe('TypeScriptLanguage: getMethod', () => {
 		const codeSpec: any = { name: 'TestMethod', visibility: '' };
 
 		const expectedMethod: string = getExpectedCodeBlock(
-			`function ${codeSpec.name} {`,
+			`${codeSpec.name}() {`,
 			testVariable1,
 			testVariable2
 		);
