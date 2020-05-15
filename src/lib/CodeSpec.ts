@@ -5,7 +5,7 @@ class CodeSpec {
 	public modifier: string | undefined;
 	public visibility: string | undefined;
 	public type: string | undefined;
-	public params: Param[] | undefined;
+	public params: Param[] = [];
 
 	public constructor(name: string) {
 		this.name = name;
