@@ -40,10 +40,10 @@ describe('TypeScriptLanguage: getMethod', () => {
 	const code = getCodeBlock(testVariable1, testVariable2);
 
 	it('should return a properly formatted private method', () => {
-		const codeSpec: any = { name: 'TestMethod', visibility: 'public' };
+		const codeSpec: any = { name: 'TestMethod', visibility: 'public', type: 'void' };
 
 		const expectedMethod: string = getExpectedCodeBlock(
-			`${codeSpec.visibility} ${codeSpec.name}() {`,
+			`${codeSpec.visibility} ${codeSpec.name}(): ${codeSpec.type} {`,
 			testVariable1,
 			testVariable2
 		);
@@ -53,10 +53,10 @@ describe('TypeScriptLanguage: getMethod', () => {
 	});
 
 	it('should return a properly formatted method if visibility is omitted', () => {
-		const codeSpec: any = { name: 'TestMethod', visibility: '' };
+		const codeSpec: any = { name: 'TestMethod', visibility: '', type: 'string' };
 
 		const expectedMethod: string = getExpectedCodeBlock(
-			`${codeSpec.name}() {`,
+			`${codeSpec.name}(): ${codeSpec.type} {`,
 			testVariable1,
 			testVariable2
 		);
