@@ -46,20 +46,17 @@ abstract class PatternSpec {
 }
 
 class ExamplePatternSpec extends PatternSpec {
-	public constructor() {
-		super();
-		this.classes.push(
-			new ClassStructure(
-				CodeSpecBuilder.getClassSpecBuilder('ExamplePattern').build(),
-				[
-					CodeSpecBuilder.getVariableSpecBuilder('name', 'string')
-						.withVisibility('private')
-						.build(),
-				],
-				[CodeSpecBuilder.getMethodSpecBuilder('getName', 'string').build()]
-			)
-		);
-	}
+	classes = [
+		new ClassStructure(
+			CodeSpecBuilder.getClassSpecBuilder('ExamplePattern').build(),
+			[
+				CodeSpecBuilder.getVariableSpecBuilder('name', 'string')
+					.withVisibility('private')
+					.build(),
+			],
+			[CodeSpecBuilder.getMethodSpecBuilder('getName', 'string').build()]
+		),
+	];
 }
 
 class ClassStructure {
