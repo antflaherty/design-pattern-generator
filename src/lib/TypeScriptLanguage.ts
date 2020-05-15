@@ -3,25 +3,21 @@ import { CodeSpec } from './CodeSpec';
 
 export default class TypeScriptLanguage implements Language {
 	public getClass(codeSpec: CodeSpec, code: string = ''): string {
-		const classCode = this.prependVisibilityAndModifier(
-			codeSpec,
-			`class ${codeSpec.name} {\n${TypeScriptLanguage.indentCode(code)}\n}`
-		);
-		return classCode;
+		code = TypeScriptLanguage.indentCode(code);
+		const classDeclaration = `class ${codeSpec.name} {\n${code}\n}`;
+		return TypeScriptLanguage.prependVisibilityAndModifier(codeSpec, classDeclaration);
 	}
 
 	public getMethod(codeSpec: CodeSpec, code: string = ''): string {
+		code = TypeScriptLanguage.indentCode(code);
 		const params = codeSpec.params.map((p) => `${p.name}: ${p.type}`).join(', ');
-		const method = `${codeSpec.name}(${params}): ${
-			codeSpec.type
-		} {\n${TypeScriptLanguage.indentCode(code)}\n}`;
-		return this.prependVisibilityAndModifier(codeSpec, method);
+		const method = `${codeSpec.name}(${params}): ${codeSpec.type} {\n${code}\n}`;
+		return TypeScriptLanguage.prependVisibilityAndModifier(codeSpec, method);
 	}
 
 	public getVariable(codeSpec: CodeSpec): string {
 		const basicDeclaration = `${codeSpec.name}: ${codeSpec.type};`;
-		const variableCode = this.prependVisibilityAndModifier(codeSpec, basicDeclaration);
-		return variableCode;
+		return TypeScriptLanguage.prependVisibilityAndModifier(codeSpec, basicDeclaration);
 	}
 
 	private static indentCode(code: string): string {
@@ -31,7 +27,7 @@ export default class TypeScriptLanguage implements Language {
 			.join('\n');
 	}
 
-	private prependVisibilityAndModifier(codeSpec: CodeSpec, code: string): string {
+	private static prependVisibilityAndModifier(codeSpec: CodeSpec, code: string): string {
 		return [codeSpec.visibility, codeSpec.modifier, code]
 			.filter((property) => property)
 			.join(' ')
