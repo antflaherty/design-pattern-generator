@@ -43,6 +43,22 @@ export default class TypeScriptLanguage implements Language {
 		return methodCode;
 	}
 
+	public getVariable(codeSpec: CodeSpec): string {
+		const { visibility, modifier, name, type } = codeSpec;
+
+		let variableCode = '';
+		if (visibility) {
+			variableCode += `${visibility} `;
+		}
+
+		if (modifier) {
+			variableCode += `${modifier} `;
+		}
+
+		variableCode += `${name}: ${type};`;
+		return variableCode;
+	}
+
 	private indentCode(code: string): string {
 		const codeLines = code.split('\n');
 		const indentedCodeLines = codeLines.map((line) => {
