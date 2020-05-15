@@ -2,10 +2,15 @@ import Language from './Language';
 import CodeSpecBuilder from './CodeSpecBuilder';
 import { CodeSpec } from './CodeSpec';
 
-export { Pattern, PatternBuilder };
+export { Pattern, PatternFactory };
 
-class PatternBuilder {
-	public static getExamplePattern(language: Language) {
+class PatternFactory {
+	public getPatternByName(patternName: string, language: Language) {
+		// This is just a template but will, in future, contain logic to get pattern by name
+		return PatternFactory.getExamplePattern(language);
+	}
+
+	private static getExamplePattern(language: Language) {
 		return new Pattern(language, new ExamplePatternSpec());
 	}
 }
@@ -20,20 +25,22 @@ class Pattern {
 	}
 
 	public build(): string[] {
-		return this.patternSpec.getClasses().map((classStructure) => {
-			const variables = classStructure.getVariableSpecs().map((variableSpec) => {
-				return this.language.getVariable(variableSpec);
-			});
+		return this.patternSpec.getClasses().map(this.getClassesFromClassStructure);
+	}
 
-			const methods = classStructure.getMethodSpecs().map((methodSpec) => {
-				return this.language.getMethod(methodSpec, '/*STUB METHOD*/');
-			});
+	private getClassesFromClassStructure(classStructure: ClassStructure): string {
+		const variables = classStructure.getVariableSpecs().map(this.getVariableFromSpec);
+		const methods = classStructure.getMethodSpecs().map(this.getMethodFromSpec);
+		const classContent = [variables.join('\n'), methods.join('\n')].join('\n');
+		return this.language.getClass(classStructure.getClassSpec(), classContent);
+	}
 
-			return this.language.getClass(
-				classStructure.getClassSpec(),
-				[...variables, ...methods].join('\n')
-			);
-		});
+	private getMethodFromSpec(methodSpec: CodeSpec): string {
+		return this.language.getMethod(methodSpec, '/*STUB METHOD*/');
+	}
+
+	private getVariableFromSpec(variableSpec: CodeSpec): string {
+		return this.language.getVariable(variableSpec);
 	}
 }
 
@@ -46,17 +53,13 @@ abstract class PatternSpec {
 }
 
 class ExamplePatternSpec extends PatternSpec {
-	classes = [
-		new ClassStructure(
-			CodeSpecBuilder.getClassSpecBuilder('ExamplePattern').build(),
-			[
-				CodeSpecBuilder.getVariableSpecBuilder('name', 'string')
-					.withVisibility('private')
-					.build(),
-			],
-			[CodeSpecBuilder.getMethodSpecBuilder('getName', 'string').build()]
-		),
-	];
+	public constructor() {
+		super();
+		const classSpec = CodeSpecBuilder.getClassSpecBuilder('ExamplePattern').build();
+		const variableSpecs = [CodeSpecBuilder.getVariableSpecBuilder('name', 'string').build()];
+		const methodSpecs = [CodeSpecBuilder.getMethodSpecBuilder('getName', 'string').build()];
+		this.classes = [new ClassStructure(classSpec, variableSpecs, methodSpecs)];
+	}
 }
 
 class ClassStructure {
