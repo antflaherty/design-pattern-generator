@@ -19,6 +19,8 @@ class Pattern {
 	private language: Language;
 	private patternSpec: PatternSpec;
 
+	private static stub = '/*STUB METHOD*/';
+
 	public constructor(language: Language, patternSpec: PatternSpec) {
 		this.language = language;
 		this.patternSpec = patternSpec;
@@ -28,19 +30,19 @@ class Pattern {
 		return this.patternSpec.getClasses().map(this.getClassesFromClassStructure);
 	}
 
-	private getClassesFromClassStructure(classStructure: ClassStructure): string {
-		const variables = classStructure.getVariableSpecs().map(this.getVariableFromSpec);
-		const methods = classStructure.getMethodSpecs().map(this.getMethodFromSpec);
+	private getClassesFromClassStructure = (classStructure: ClassStructure): string => {
+		const variables = this.getVariablesFromSpecs(classStructure.getVariableSpecs());
+		const methods = this.getMethodsFromSpecs(classStructure.getMethodSpecs());
 		const classContent = [variables.join('\n'), methods.join('\n')].join('\n');
 		return this.language.getClass(classStructure.getClassSpec(), classContent);
+	};
+
+	private getMethodsFromSpecs(methodSpecs: CodeSpec[]): string[] {
+		return methodSpecs.map((spec: CodeSpec) => this.language.getMethod(spec, Pattern.stub));
 	}
 
-	private getMethodFromSpec(methodSpec: CodeSpec): string {
-		return this.language.getMethod(methodSpec, '/*STUB METHOD*/');
-	}
-
-	private getVariableFromSpec(variableSpec: CodeSpec): string {
-		return this.language.getVariable(variableSpec);
+	private getVariablesFromSpecs(variableSpecs: CodeSpec[]): string[] {
+		return variableSpecs.map((spec) => this.language.getVariable(spec));
 	}
 }
 
