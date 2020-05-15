@@ -16,8 +16,8 @@ describe('TypeScriptLanguage: getClass', () => {
 			testMethod2
 		);
 
-		const language: TypeScriptLanguage = new TypeScriptLanguage();
-		expect(language.getClass(codeSpec, code)).to.equal(expectedClass);
+		const language: TypeScriptLanguage = new TypeScriptLanguage(codeSpec, code);
+		expect(language.getClass()).to.equal(expectedClass);
 	});
 
 	it('should return a properly formatted class if visibility is omitted', () => {
@@ -29,8 +29,8 @@ describe('TypeScriptLanguage: getClass', () => {
 			testMethod2
 		);
 
-		const language: TypeScriptLanguage = new TypeScriptLanguage();
-		expect(language.getClass(codeSpec, code)).to.equal(expectedClass);
+		const language: TypeScriptLanguage = new TypeScriptLanguage(codeSpec, code);
+		expect(language.getClass()).to.equal(expectedClass);
 	});
 });
 
@@ -40,7 +40,12 @@ describe('TypeScriptLanguage: getMethod', () => {
 	const code = getCodeBlock(testVariable1, testVariable2);
 
 	it('should return a properly formatted private method', () => {
-		const codeSpec: any = { name: 'TestMethod', visibility: 'public', type: 'void' };
+		const codeSpec: any = {
+			name: 'TestMethod',
+			visibility: 'public',
+			type: 'void',
+			params: [],
+		};
 
 		const expectedMethod: string = getExpectedCodeBlock(
 			`${codeSpec.visibility} ${codeSpec.name}(): ${codeSpec.type} {`,
@@ -48,12 +53,12 @@ describe('TypeScriptLanguage: getMethod', () => {
 			testVariable2
 		);
 
-		const language: TypeScriptLanguage = new TypeScriptLanguage();
-		expect(language.getMethod(codeSpec, code)).to.equal(expectedMethod);
+		const language: TypeScriptLanguage = new TypeScriptLanguage(codeSpec, code);
+		expect(language.getMethod()).to.equal(expectedMethod);
 	});
 
 	it('should return a properly formatted method if visibility is omitted', () => {
-		const codeSpec: any = { name: 'TestMethod', visibility: '', type: 'string' };
+		const codeSpec: any = { name: 'TestMethod', visibility: '', type: 'string', params: [] };
 
 		const expectedMethod: string = getExpectedCodeBlock(
 			`${codeSpec.name}(): ${codeSpec.type} {`,
@@ -61,8 +66,8 @@ describe('TypeScriptLanguage: getMethod', () => {
 			testVariable2
 		);
 
-		const language: TypeScriptLanguage = new TypeScriptLanguage();
-		expect(language.getMethod(codeSpec, code)).to.equal(expectedMethod);
+		const language: TypeScriptLanguage = new TypeScriptLanguage(codeSpec, code);
+		expect(language.getMethod()).to.equal(expectedMethod);
 	});
 });
 
@@ -72,8 +77,8 @@ describe('TypeScriptLanguage: getVariable', () => {
 
 		const expectedVariable = `${codeSpec.visibility} ${codeSpec.name}: ${codeSpec.type};`;
 
-		const language: TypeScriptLanguage = new TypeScriptLanguage();
-		expect(language.getVariable(codeSpec)).to.equal(expectedVariable);
+		const language: TypeScriptLanguage = new TypeScriptLanguage(codeSpec);
+		expect(language.getVariable()).to.equal(expectedVariable);
 	});
 });
 
