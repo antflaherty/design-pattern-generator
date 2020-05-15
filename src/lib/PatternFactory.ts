@@ -33,7 +33,7 @@ class Pattern {
 	private getClassesFromClassStructure = (classStructure: ClassStructure): string => {
 		const variables = this.getVariablesFromSpecs(classStructure.getVariableSpecs());
 		const methods = this.getMethodsFromSpecs(classStructure.getMethodSpecs());
-		const classContent = [variables.join('\n'), methods.join('\n')].join('\n');
+		const classContent = [variables.join('\n'), methods.join('\n')].join('\n\n');
 		return this.language.getClass(classStructure.getClassSpec(), classContent);
 	};
 
