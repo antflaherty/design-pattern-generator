@@ -1,12 +1,6 @@
+import { CodeSpec } from './CodeSpec';
+
 export default interface Language {
-	getClass(codeSpec: { name: string; visibility: string }, code: string): string;
-	getMethod(
-		codeSpec: {
-			name: string;
-			visibility: string;
-			type: string;
-			params: { name: string; type: string }[];
-		},
-		code: string
-	): string;
+	getClass(codeSpec: CodeSpec, code: string): string;
+	getMethod(codeSpec: CodeSpec, code: string): string;
 }
