@@ -3,40 +3,34 @@ import { CodeSpec } from './CodeSpec';
 
 export default class TypeScriptLanguage implements Language {
 	public getClass(codeSpec: CodeSpec, code: string): string {
-		const classVisibilty = codeSpec.visibility;
-		const classModifier = codeSpec.modifier;
-		const className = codeSpec.name;
+		const { modifier, name, visibility } = codeSpec;
 		let classCode = '';
 
-		if (classVisibilty) {
-			classCode += `${classVisibilty} `;
+		if (visibility) {
+			classCode += `${visibility} `;
 		}
 
-		if (classModifier) {
-			classCode += `${classModifier} `;
+		if (modifier) {
+			classCode += `${modifier} `;
 		}
 
-		classCode += `class ${className} {\n${this.indentCode(code)}\n}`;
+		classCode += `class ${name} {\n${this.indentCode(code)}\n}`;
 		return classCode;
 	}
 
 	public getMethod(codeSpec: CodeSpec, code: string): string {
-		const methodVisibilty = codeSpec.visibility;
-		const methodModifier = codeSpec.modifier;
-		const methodName = codeSpec.name;
-		const params = codeSpec.params;
-		const returnType = codeSpec.type;
+		const { modifier, name, params, type, visibility } = codeSpec;
 		let methodCode = '';
 
-		if (methodVisibilty) {
-			methodCode += `${methodVisibilty} `;
+		if (visibility) {
+			methodCode += `${visibility} `;
 		}
 
-		if (methodModifier) {
-			methodCode += `${methodModifier} `;
+		if (modifier) {
+			methodCode += `${modifier} `;
 		}
 
-		methodCode += `${methodName}(`;
+		methodCode += `${name}(`;
 
 		if (params) {
 			params.forEach((param) => {
@@ -45,7 +39,7 @@ export default class TypeScriptLanguage implements Language {
 			methodCode = methodCode.substr(0, methodCode.length - 2);
 		}
 
-		methodCode += `): ${returnType} {\n${this.indentCode(code)}\n}`;
+		methodCode += `): ${type} {\n${this.indentCode(code)}\n}`;
 		return methodCode;
 	}
 
