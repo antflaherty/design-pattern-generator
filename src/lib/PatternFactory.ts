@@ -5,7 +5,7 @@ import { CodeSpec } from './CodeSpec';
 export { Pattern, PatternFactory };
 
 class PatternFactory {
-	public getPatternByName(patternName: string, language: Language) {
+	public getPatternByName(language: Language) {
 		// This is just a template but will, in future, contain logic to get pattern by name
 		return PatternFactory.getExamplePattern(language);
 	}
