@@ -70,7 +70,7 @@ describe('TypeScriptLanguage: getVariable', () => {
 	it('should return a properly formatted variable', () => {
 		const codeSpec: any = { name: 'privateVariable', visibility: 'private', type: 'string' };
 
-		const expectedVariable = `${codeSpec.visibility} ${codeSpec.name}: ${codeSpec.type}`;
+		const expectedVariable = `${codeSpec.visibility} ${codeSpec.name}: ${codeSpec.type};`;
 
 		const language: TypeScriptLanguage = new TypeScriptLanguage();
 		expect(language.getVariable(codeSpec)).to.equal(expectedVariable);
