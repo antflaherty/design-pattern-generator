@@ -1,61 +1,66 @@
 import { CodeSpec, Param } from './CodeSpec';
 
-export { CodeSpecBuilder, ClassSpecBuilder, MethodSpecBuilder, VariableSpecBuilder };
+export default class CodeSpecBuilder {
+	private name: string = '';
+	private modifier: string = '';
+	private visibility: string = '';
+	private type: string = '';
+	private params: Param[] = [];
 
-abstract class CodeSpecBuilder {
-	protected codeSpec: CodeSpec;
-
-	public constructor() {
-		this.codeSpec = new CodeSpec('');
+	public static getClassSpecBuilder(name: string) {
+		const builder = new CodeSpecBuilder().withName(name).withVisibility('public');
+		return builder;
 	}
 
+	public static getMethodSpecBuilder(name: string, type: string) {
+		const builder = new CodeSpecBuilder()
+			.withName(name)
+			.withType(type)
+			.withVisibility('public');
+		return builder;
+	}
+
+	public static getVariableSpecBuilder(name: string, type: string) {
+		const builder = new CodeSpecBuilder()
+			.withName(name)
+			.withType(type)
+			.withVisibility('private');
+		return builder;
+	}
+
+	private constructor() {}
+
 	public withName(name: string): CodeSpecBuilder {
-		this.codeSpec = new CodeSpec(name);
+		this.name = name;
 		return this;
 	}
 
 	public withModifier(modifier: string): CodeSpecBuilder {
-		this.codeSpec.modifier = modifier;
+		this.modifier = modifier;
 		return this;
 	}
 
 	public withVisibility(visibility: string): CodeSpecBuilder {
-		this.codeSpec.visibility = visibility;
+		this.visibility = visibility;
 		return this;
 	}
 
 	public withType(type: string): CodeSpecBuilder {
-		this.codeSpec.type = type;
+		this.type = type;
 		return this;
 	}
 
 	public withParams(params: Param[]): CodeSpecBuilder {
-		this.codeSpec.params = params;
+		this.params = params;
 		return this;
 	}
-	abstract getCodeSpec(): CodeSpec;
-}
 
-class ClassSpecBuilder extends CodeSpecBuilder {
-	public getCodeSpec(): CodeSpec {
-		return this.codeSpec;
-	}
-}
-
-class MethodSpecBuilder extends CodeSpecBuilder {
-	public getCodeSpec(): CodeSpec {
-		if (!this.codeSpec.type) {
-			throw new Error('Return type required for methods');
-		}
-		return this.codeSpec;
-	}
-}
-
-class VariableSpecBuilder extends CodeSpecBuilder {
-	public getCodeSpec(): CodeSpec {
-		if (!this.codeSpec.type) {
-			throw new Error('Type required for variables');
-		}
-		return this.codeSpec;
+	public build() {
+		const codeSpec = new CodeSpec(this.name);
+		codeSpec.modifier = this.modifier;
+		codeSpec.visibility = this.visibility;
+		codeSpec.type = this.type;
+		codeSpec.params = this.params;
+		return codeSpec;
 	}
 }
