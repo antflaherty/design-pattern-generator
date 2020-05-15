@@ -9,24 +9,29 @@ abstract class CodeSpecBuilder {
 		this.codeSpec = new CodeSpec('');
 	}
 
-	public setName(name: string): void {
+	public withName(name: string): CodeSpecBuilder {
 		this.codeSpec = new CodeSpec(name);
+		return this;
 	}
 
-	public setModifier(modifier: string): void {
+	public withModifier(modifier: string): CodeSpecBuilder {
 		this.codeSpec.modifier = modifier;
+		return this;
 	}
 
-	public setVisibility(visibility: string): void {
+	public withVisibility(visibility: string): CodeSpecBuilder {
 		this.codeSpec.visibility = visibility;
+		return this;
 	}
 
-	public setType(type: string): void {
+	public withType(type: string): CodeSpecBuilder {
 		this.codeSpec.type = type;
+		return this;
 	}
 
-	public setParams(params: Param[]): void {
+	public withParams(params: Param[]): CodeSpecBuilder {
 		this.codeSpec.params = params;
+		return this;
 	}
 	abstract getCodeSpec(): CodeSpec;
 }
