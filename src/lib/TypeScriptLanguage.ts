@@ -1,5 +1,5 @@
 import Language from './Language';
-import { CodeSpec } from './CodeSpec';
+import CodeSpec from './CodeSpec';
 
 export default class TypeScriptLanguage implements Language {
 	public getClass(codeSpec: CodeSpec, code: string = ''): string {

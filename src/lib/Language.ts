@@ -1,4 +1,4 @@
-import { CodeSpec } from './CodeSpec';
+import CodeSpec from './CodeSpec';
 
 export default interface Language {
 	getClass(codeSpec: CodeSpec, code: string): string;

@@ -1,4 +1,4 @@
-import { CodeSpec, Param } from './CodeSpec';
+import CodeSpec, { Param } from './CodeSpec';
 
 export default class CodeSpecBuilder {
 	private name: string = '';

@@ -1,6 +1,4 @@
-export { CodeSpec, Param };
-
-class CodeSpec {
+export default class CodeSpec {
 	public name: string;
 	public modifier: string | undefined;
 	public visibility: string | undefined;
@@ -12,7 +10,7 @@ class CodeSpec {
 	}
 }
 
-type Param = {
+export type Param = {
 	name: string;
 	type: string;
 };
